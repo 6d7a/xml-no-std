@@ -162,6 +162,7 @@ impl<'a> From<&'a str> for XmlEvent<'a> {
     }
 }
 
+/// A builder for a closing element event.
 pub struct EndElementBuilder<'a> {
     name: Option<Name<'a>>,
 }

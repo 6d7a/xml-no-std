@@ -54,16 +54,17 @@ The package exposes a single crate called `xml-no-std`.
 
 ## Reading XML documents
 
-[`xml::reader::EventReader`](EventReader) requires an [`Iterator`](https://doc.rust-lang.org/core/iter/trait.Iterator.html) 
+[`xml_no_std::reader::EventReader`](EventReader) requires an [`Iterator`](https://doc.rust-lang.org/core/iter/trait.Iterator.html) 
 over `&u8` items to read from. 
 
 [EventReader]: https://docs.rs/xml-rs/latest/xml/reader/struct.EventReader.html
 
 `EventReader` implements `IntoIterator` trait, so you can use it in a `for` loop directly:
 
-```rust
+```rust,ignore
 use std::fs::File;
 use std::io::BufReader;
+use std::io::Read;
 
 use xml_no_std::reader::{EventReader, XmlEvent};
 
@@ -112,7 +113,7 @@ Upon the end of the document or an error, the parser will remember the last even
 return it in the result of `next()` call afterwards. If iterator is used, then it will yield
 error or end-of-document event once and will produce `None` afterwards.
 
-It is also possible to tweak parsing process a little using [`xml::reader::ParserConfig`][ParserConfig] structure.
+It is also possible to tweak parsing process a little using [`xml_no_std::reader::ParserConfig`][ParserConfig] structure.
 See its documentation for more information and examples.
 
 [ParserConfig]: https://docs.rs/xml-rs/latest/xml/reader/struct.ParserConfig.html
@@ -129,7 +130,8 @@ XML document to any `Write` implementor.
 
 ```rust,no_run
 use std::io;
-use xml::writer::{EmitterConfig, XmlEvent};
+use xml_no_std::writer::{EmitterConfig, XmlEvent};
+use std::io::Write;
 
 /// A simple demo syntax where "+foo" makes `<foo>`, "-foo" makes `</foo>`
 fn make_event_from_line(line: &str) -> XmlEvent {
@@ -145,7 +147,7 @@ fn make_event_from_line(line: &str) -> XmlEvent {
 
 fn main() -> io::Result<()> {
     let input = io::stdin();
-    let out = io::stdout();
+    let mut out = io::stdout();
     let mut writer = EmitterConfig::new()
         .perform_indent(true)
         .create_writer();
@@ -185,7 +187,7 @@ XmlEvent::cdata("some unescaped text")
 ```
 
 Of course, one can create `XmlEvent` enum variants directly instead of using the builder DSL.
-There are more examples in [`xml::writer::XmlEvent`][XmlEvent] documentation.
+There are more examples in [`xml_no_std::writer::XmlEvent`][XmlEvent] documentation.
 
 [XmlEvent]: https://docs.rs/xml-rs/latest/xml/reader/enum.XmlEvent.html
 

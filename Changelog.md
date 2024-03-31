@@ -129,7 +129,7 @@
 
 ## Version 0.4.1
 
-* Added missing `Debug` implementation to `xml::writer::XmlEvent`.
+* Added missing `Debug` implementation to `xml_no_std::writer::XmlEvent`.
 
 ## Version 0.4.0
 
@@ -160,7 +160,7 @@
 
 ## Version 0.3.2
 
-* Added `From<io::Error>` for `xml::reader::Error`, which improves usability of working with parsing errors.
+* Added `From<io::Error>` for `xml_no_std::reader::Error`, which improves usability of working with parsing errors.
 
 ## Version 0.3.1
 

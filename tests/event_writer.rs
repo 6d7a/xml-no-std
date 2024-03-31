@@ -3,8 +3,8 @@
 use std::fs::File;
 use std::io::prelude::*;
 
-use xml::reader::EventReader;
-use xml::writer::EmitterConfig;
+use xml_no_std::reader::EventReader;
+use xml_no_std::writer::EmitterConfig;
 
 macro_rules! unwrap_all {
     ($($e:expr);+) => {{
@@ -38,7 +38,7 @@ fn reading_writing_equal_with_namespaces() {
 
 #[test]
 fn writing_simple() {
-    use xml::writer::XmlEvent;
+    use xml_no_std::writer::XmlEvent;
     
     let mut w = EmitterConfig::new().write_document_declaration(false).create_writer();
     w.write(XmlEvent::start_element("h:hello").ns("h", "urn:hello-world")).unwrap();
@@ -54,7 +54,7 @@ fn writing_simple() {
 
 #[test]
 fn writing_empty_elements_with_normalizing() {
-    use xml::writer::XmlEvent;
+    use xml_no_std::writer::XmlEvent;
 
    let mut w = EmitterConfig::new().write_document_declaration(false).create_writer();
 
@@ -70,7 +70,7 @@ fn writing_empty_elements_with_normalizing() {
 
 #[test]
 fn writing_empty_elements_without_normalizing() {
-    use xml::writer::XmlEvent;
+    use xml_no_std::writer::XmlEvent;
 
     let mut w = EmitterConfig::new()
         .write_document_declaration(false)
@@ -89,7 +89,7 @@ fn writing_empty_elements_without_normalizing() {
 
 #[test]
 fn writing_empty_elements_without_pad_self_closing() {
-    use xml::writer::XmlEvent;
+    use xml_no_std::writer::XmlEvent;
 
     let mut w = EmitterConfig::new()
         .write_document_declaration(false)
@@ -107,7 +107,7 @@ fn writing_empty_elements_without_pad_self_closing() {
 }
 #[test]
 fn writing_empty_elements_pad_self_closing_explicit() {
-    use xml::writer::XmlEvent;
+    use xml_no_std::writer::XmlEvent;
         
     let mut w = EmitterConfig::new()
         .write_document_declaration(false)
@@ -126,7 +126,7 @@ fn writing_empty_elements_pad_self_closing_explicit() {
 
 #[test]
 fn writing_comments_with_indentation() {
-    use xml::writer::XmlEvent;
+    use xml_no_std::writer::XmlEvent;
 
     let mut w = EmitterConfig::new()
         .write_document_declaration(false)
@@ -155,7 +155,7 @@ fn writing_comments_with_indentation() {
 
 #[test]
 fn issue_112_overriding_namepace_prefix() {
-    use xml::writer::XmlEvent;
+    use xml_no_std::writer::XmlEvent;
 
     let mut w = EmitterConfig::new()
         .write_document_declaration(false)
@@ -178,7 +178,7 @@ fn issue_112_overriding_namepace_prefix() {
 
 #[test]
 fn attribute_escaping() {
-    use xml::writer::XmlEvent;
+    use xml_no_std::writer::XmlEvent;
 
     let mut w = EmitterConfig::new()
         .write_document_declaration(false)
@@ -230,21 +230,22 @@ fn attribute_escaping() {
 fn accidental_cdata_suffix_in_characters_is_escaped() {
     let mut b = Vec::new();
     {
-        use xml::writer::XmlEvent;
+        use xml_no_std::writer::XmlEvent;
         let mut w = EmitterConfig::new()
             .write_document_declaration(false)
-            .create_writer(&mut b);
+            .create_writer();
 
         unwrap_all! {
             w.write(XmlEvent::start_element("root"));
             w.write(XmlEvent::characters("[[a]]>b"));
             w.write(XmlEvent::end_element())
         }
+        b = w.into_inner().into_bytes()
     }
 
     {
-        use xml::reader::{EventReader, XmlEvent};
-        let mut r = EventReader::new(&b[..]);
+        use xml_no_std::reader::{EventReader, XmlEvent};
+        let mut r = EventReader::new(b[..].into_iter());
         assert!(matches!(r.next().unwrap(), XmlEvent::StartDocument{..}));
         assert!(matches!(r.next().unwrap(), XmlEvent::StartElement{..}));
         assert_eq!(r.next().unwrap(), XmlEvent::Characters("[[a]]>b".into()));

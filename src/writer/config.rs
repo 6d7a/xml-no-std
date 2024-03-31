@@ -89,7 +89,7 @@ impl EmitterConfig {
     /// You can tweak default options with builder-like pattern:
     ///
     /// ```rust
-    /// use xml::writer::EmitterConfig;
+    /// use xml_no_std::writer::EmitterConfig;
     ///
     /// let config = EmitterConfig::new()
     ///     .line_separator("\r\n")
@@ -118,7 +118,7 @@ impl EmitterConfig {
     /// This is a convenience method for configuring and creating a writer at the same time:
     ///
     /// ```rust
-    /// use xml::writer::EmitterConfig;
+    /// use xml_no_std::writer::EmitterConfig;
     ///
     /// let mut target: Vec<u8> = Vec::new();
     ///
@@ -126,7 +126,7 @@ impl EmitterConfig {
     ///     .line_separator("\r\n")
     ///     .perform_indent(true)
     ///     .normalize_empty_elements(false)
-    ///     .create_writer(&mut target);
+    ///     .create_writer();
     /// ```
     ///
     /// This method is exactly equivalent to calling `EventWriter::new_with_config()` with

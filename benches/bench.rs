@@ -2,7 +2,7 @@
 
 extern crate test;
 use test::Bencher;
-use xml::{EventReader, EventWriter};
+use xml_no_std::{EventReader, EventWriter};
 
 #[bench]
 fn read(bencher: &mut Bencher) {

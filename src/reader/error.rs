@@ -14,11 +14,14 @@ use core::str;
 use crate::common::{Position, TextPosition};
 use crate::util;
 
+/// Failure reason
 #[derive(Debug)]
 pub enum ErrorKind {
+    /// This is an ill-formed XML document
     Syntax(Cow<'static, str>),
     Io(String),
     Utf8(str::Utf8Error),
+    /// The document ended while they were elements/comments/etc. still open
     UnexpectedEof,
 }
 
@@ -169,6 +172,7 @@ impl Error {
         }
     }
 
+    /// Failure reason
     #[must_use]
     #[inline]
     pub fn kind(&self) -> &ErrorKind {

@@ -7,9 +7,9 @@
 // use std::path::Path;
 // use std::process::Command;
 // use std::sync::Mutex;
-// use xml::EventWriter;
-// use xml::ParserConfig;
-// use xml::reader::XmlEvent;
+// use xml_no_std::EventWriter;
+// use xml_no_std::ParserConfig;
+// use xml_no_std::reader::XmlEvent;
 
 // static UNZIP: Mutex<()> = Mutex::new(());
 

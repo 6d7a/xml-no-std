@@ -1,4 +1,3 @@
-//#![warn(missing_doc)]
 #![cfg_attr(not(test), no_std)]
 #![forbid(non_camel_case_types)]
 #![forbid(unsafe_code)]

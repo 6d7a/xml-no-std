@@ -1,6 +1,6 @@
 //! Contains simple lexer for XML documents.
 //!
-//! This module is for internal use. Use `xml::pull` module to do parsing.
+//! This module is for internal use. Use `xml_no_std::pull` module to do parsing.
 extern crate alloc;
 
 use alloc::string::String;
@@ -138,7 +138,7 @@ enum State {
     DoctypeStarted(DoctypeStartedSubstate),
     /// Other items like `<!ELEMENT` in DTD
     InsideMarkupDeclaration,
-    /// Triggered after DoctypeStarted to handle sub elements
+    /// Triggered after `DoctypeStarted` to handle sub elements
     InsideDoctype,
     /// Triggered on '<![' up to '<![CDATA'
     CDataStarted(CDataStartedSubstate),

@@ -102,7 +102,7 @@ impl<'a, S: Iterator<Item = &'a u8>> IntoIterator for EventReader<'a, S> {
 
 /// An iterator over XML events created from some type implementing `Iterator<Item = &u8>`.
 ///
-/// When the next event is `xml::event::Error` or `xml::event::EndDocument`, then
+/// When the next event is `xml_no_std::event::Error` or `xml_no_std::event::EndDocument`, then
 /// it will be returned by the iterator once, and then it will stop producing events.
 pub struct Events<'a, S: Iterator<Item = &'a u8>> {
     reader: EventReader<'a, S>,

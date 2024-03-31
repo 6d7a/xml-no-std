@@ -162,16 +162,16 @@ impl XmlEvent {
     /// ```rust
     /// use std::str;
     ///
-    /// use xml::{EventReader, EventWriter};
-    /// use xml::reader::XmlEvent as ReaderEvent;
-    /// use xml::writer::XmlEvent as WriterEvent;
+    /// use xml_no_std::{EventReader, EventWriter};
+    /// use xml_no_std::reader::XmlEvent as ReaderEvent;
+    /// use xml_no_std::writer::XmlEvent as WriterEvent;
     ///
     /// let mut input: &[u8] = b"<hello>world</hello>";
     /// let mut output: Vec<u8> = Vec::new();
     ///
     /// {
-    ///     let mut reader = EventReader::new(&mut input);
-    ///     let mut writer = EventWriter::new(&mut output);
+    ///     let mut reader = EventReader::new(input.into_iter());
+    ///     let mut writer = EventWriter::new();
     ///
     ///     for e in reader {
     ///         match e.unwrap() {
@@ -182,6 +182,7 @@ impl XmlEvent {
     ///             }
     ///         }
     ///     }
+    ///     output = writer.into_inner().into_bytes();
     /// }
     ///
     /// assert_eq!(

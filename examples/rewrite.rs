@@ -1,9 +1,9 @@
 //! See <https://lib.rs/crates/svg-hush> for a real-world example.
 
-use xml::EmitterConfig;
+use xml_no_std::EmitterConfig;
 use std::{fs::File, io::Read};
 use std::path::Path;
-use xml::reader::{ParserConfig, Result};
+use xml_no_std::reader::{ParserConfig, Result};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let arg = std::env::args_os().nth(1);
@@ -30,9 +30,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             .map_err(reader_err_to_std_error)?;
 
         match reader_event {
-            xml::reader::XmlEvent::EndDocument => break,
-            xml::reader::XmlEvent::StartElement { name, mut attributes, namespace } => {
-                let event = xml::writer::XmlEvent::StartElement  {
+            xml_no_std::reader::XmlEvent::EndDocument => break,
+            xml_no_std::reader::XmlEvent::StartElement { name, mut attributes, namespace } => {
+                let event = xml_no_std::writer::XmlEvent::StartElement  {
                     name: name.borrow(),
                     namespace: namespace.borrow(),
                     attributes: attributes.iter_mut().map(|attr| {
@@ -42,14 +42,14 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 };
                 writer.write(event).map_err(writer_err_to_std_error)?;
             },
-            xml::reader::XmlEvent::Characters(text) => {
+            xml_no_std::reader::XmlEvent::Characters(text) => {
                 let text = alternating_caps(&text);
-                let event = xml::writer::XmlEvent::Characters(&text);
+                let event = xml_no_std::writer::XmlEvent::Characters(&text);
                 writer.write(event).map_err(writer_err_to_std_error)?;
             },
-            xml::reader::XmlEvent::Comment(text) => {
+            xml_no_std::reader::XmlEvent::Comment(text) => {
                 let text = alternating_caps(&text);
-                let event = xml::writer::XmlEvent::Comment(&text);
+                let event = xml_no_std::writer::XmlEvent::Comment(&text);
                 writer.write(event).map_err(writer_err_to_std_error)?;
             },
             other => {
@@ -63,11 +63,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 
-fn reader_err_to_std_error(e: xml::reader::Error) -> Box<dyn std::error::Error> {
+fn reader_err_to_std_error(e: xml_no_std::reader::Error) -> Box<dyn std::error::Error> {
     <&str as std::convert::Into<Box<dyn std::error::Error>>>::into(e.to_string().as_str())
 }
 
-fn writer_err_to_std_error(e: xml::writer::Error) -> Box<dyn std::error::Error> {
+fn writer_err_to_std_error(e: xml_no_std::writer::Error) -> Box<dyn std::error::Error> {
     <&str as std::convert::Into<Box<dyn std::error::Error>>>::into(e.to_string().as_str())
 }
 

@@ -76,7 +76,7 @@ pub struct ParserConfig {
     /// By default the parser will either error out when it encounters a premature end of
     /// stream or complete normally if the end of stream was expected. If you want to continue
     /// reading from a stream whose input is supplied progressively, you can set this option to true.
-    /// In this case the parser will allow you to invoke the next() method even if a supposed end
+    /// In this case the parser will allow you to invoke the `next()` method even if a supposed end
     /// of stream has happened.
     ///
     /// Note that support for this functionality is incomplete; for example, the parser will fail if
@@ -105,7 +105,7 @@ impl ParserConfig {
     /// You can tweak default values using builder-like pattern:
     ///
     /// ```rust
-    /// use xml::reader::ParserConfig;
+    /// use xml_no_std::reader::ParserConfig;
     ///
     /// let config = ParserConfig::new()
     ///     .trim_whitespace(true)
@@ -133,7 +133,7 @@ impl ParserConfig {
     /// This is a convenience method for configuring and creating a reader at the same time:
     ///
     /// ```rust
-    /// use xml::reader::ParserConfig;
+    /// use xml_no_std::reader::ParserConfig;
     ///
     /// let mut source: &[u8] = b"...";
     ///
@@ -141,7 +141,7 @@ impl ParserConfig {
     ///     .trim_whitespace(true)
     ///     .ignore_comments(true)
     ///     .coalesce_characters(false)
-    ///     .create_reader(&mut source);
+    ///     .create_reader(source.into_iter());
     /// ```
     ///
     /// This method is exactly equivalent to calling `EventReader::new_with_config()` with
@@ -157,7 +157,7 @@ impl ParserConfig {
     /// An example:
     ///
     /// ```rust
-    /// use xml::reader::ParserConfig;
+    /// use xml_no_std::reader::ParserConfig;
     ///
     /// let mut source: &[u8] = b"...";
     ///
@@ -165,7 +165,7 @@ impl ParserConfig {
     ///     .add_entity("nbsp", " ")
     ///     .add_entity("copy", "©")
     ///     .add_entity("reg", "®")
-    ///     .create_reader(&mut source);
+    ///     .create_reader(source.into_iter());
     /// ```
     #[must_use]
     pub fn add_entity<S: Into<String>, T: Into<String>>(mut self, entity: S, value: T) -> ParserConfig {
@@ -244,6 +244,7 @@ impl Default for ParserConfig2 {
 }
 
 impl ParserConfig2 {
+    /// Create extended configuration struct
     #[inline]
     #[must_use]
     pub fn new() -> Self {
@@ -272,7 +273,7 @@ impl ParserConfig2 {
     /// This is a convenience method for configuring and creating a reader at the same time:
     ///
     /// ```rust
-    /// use xml::reader::ParserConfig;
+    /// use xml_no_std::reader::ParserConfig;
     ///
     /// let mut source: &[u8] = b"...";
     ///
@@ -280,7 +281,7 @@ impl ParserConfig2 {
     ///     .trim_whitespace(true)
     ///     .ignore_comments(true)
     ///     .coalesce_characters(false)
-    ///     .create_reader(&mut source);
+    ///     .create_reader(source.into_iter());
     /// ```
     ///
     /// This method is exactly equivalent to calling `EventReader::new_with_config()` with

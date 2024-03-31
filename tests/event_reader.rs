@@ -1,22 +1,22 @@
 #![forbid(unsafe_code)]
 
-use xml::reader::ParserConfig2;
+use xml_no_std::reader::ParserConfig2;
 use std::fmt;
 use std::io::{stderr, BufRead, BufReader, Write};
 use std::path::Path;
 
-use xml::common::Position;
-use xml::name::OwnedName;
-use xml::reader::{ParserConfig, Result, XmlEvent};
+use xml_no_std::common::Position;
+use xml_no_std::name::OwnedName;
+use xml_no_std::reader::{ParserConfig, Result, XmlEvent};
 
 #[test]
 fn issue_177() {
-    assert!(xml::EventReader::from_str(";<?").next().is_err());
+    assert!(xml_no_std::EventReader::from_str(";<?").next().is_err());
 }
 
 #[test]
 fn issue_204() {
-    xml::EventReader::from_str("<!DOCTYPE<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\
+    xml_no_std::EventReader::from_str("<!DOCTYPE<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\
     <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\
     <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\
     <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\
@@ -25,7 +25,7 @@ fn issue_204() {
 
 #[test]
 fn issue_227() {
-    xml::EventReader::new_with_config(r#"<root>
+    xml_no_std::EventReader::new_with_config(r#"<root>
         <item><![CDATA[]]></item>
         <item><![CDATA[]]></item>
         <item><![CDATA[]]></item>
@@ -772,7 +772,7 @@ fn test_inner(input: &[u8], output: &[u8], config: ParserConfig2, test_position:
 
 #[test]
 fn skip() {
-    let mut reader = xml::EventReader::from_str(r#"<a><x><c foo="bar"><d bar="none" /></c></x>Hello</a>"#);
+    let mut reader = xml_no_std::EventReader::from_str(r#"<a><x><c foo="bar"><d bar="none" /></c></x>Hello</a>"#);
 
     'outer: loop {
         match reader.next().expect("Unexpected error!") {

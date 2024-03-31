@@ -377,7 +377,7 @@ impl NamespaceStack {
 ///
 /// # Example
 /// ```
-/// # use xml::namespace::NamespaceStack;
+/// # use xml_no_std::namespace::NamespaceStack;
 /// let mut nst = NamespaceStack::empty();
 /// nst.push_empty();
 /// nst.put("a", "urn:A");
@@ -470,7 +470,7 @@ impl<'a> Extend<UriMapping<'a>> for NamespaceStack {
 /// # Example
 ///
 /// ```
-/// # use xml::namespace::NamespaceStack;
+/// # use xml_no_std::namespace::NamespaceStack;
 ///
 /// let mut nst = NamespaceStack::empty();
 /// nst.push_empty();
@@ -489,7 +489,7 @@ impl<'a> Extend<UriMapping<'a>> for NamespaceStack {
 /// Compare:
 ///
 /// ```
-/// # use xml::namespace::NamespaceStack;
+/// # use xml_no_std::namespace::NamespaceStack;
 /// # let mut nst = NamespaceStack::empty();
 /// # nst.push_empty();
 /// # nst.put("a", "urn:A");
