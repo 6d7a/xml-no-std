@@ -339,9 +339,14 @@ impl PullParser {
             // While lexer gives us Ok(maybe_token) -- we loop.
             // Upon having a complete XML-event -- we return from the whole function.
             match self.lexer.next_token(r) {
-                Ok(Some(token)) => {
+                Ok(Token::Eof) => {
+                    // Forward pos to the lexer head
+                    self.next_pos();
+                    return self.handle_eof()
+                },
+                Ok(token) => {
                     match self.dispatch_token(token) {
-                        None => {} // continue
+                        None => continue,
                         Some(Ok(xml_event)) => {
                             self.next_pos();
                             return Ok(xml_event)
@@ -352,20 +357,17 @@ impl PullParser {
                         },
                     }
                 },
-                Ok(None) => break,
                 Err(lexer_error) => {
+                    self.next_pos();
                     return self.set_final_result(Err(lexer_error))
                 },
             }
         }
-
-        self.handle_eof()
     }
 
     /// Handle end of stream
+    #[cold]
     fn handle_eof(&mut self) -> core::result::Result<XmlEvent, super::Error> {
-        // Forward pos to the lexer head
-        self.next_pos();
         let ev = if self.depth() == 0 {
             if self.encountered == Encountered::Element && self.st == State::OutsideTag {  // all is ok
                 Ok(XmlEvent::EndDocument)
