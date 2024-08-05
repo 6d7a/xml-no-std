@@ -15,7 +15,7 @@ impl TextPosition {
     /// Creates a new position initialized to the beginning of the document
     #[inline]
     #[must_use]
-    pub fn new() -> TextPosition {
+    pub const fn new() -> TextPosition {
         TextPosition { row: 0, column: 0 }
     }
 
