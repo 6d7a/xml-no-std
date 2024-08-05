@@ -66,8 +66,11 @@ impl<'a, S: Iterator<Item = &'a u8>> EventReader<'a, S> {
             match self.next()? {
                 XmlEvent::StartElement { .. } => depth += 1,
                 XmlEvent::EndElement { .. } => depth -= 1,
-                XmlEvent::EndDocument => unreachable!(),
-                _ => {}
+                XmlEvent::EndDocument => return Err(Error {
+                    kind: ErrorKind::UnexpectedEof,
+                    pos: self.parser.position(),
+                }),
+                _ => {},
             }
         }
 

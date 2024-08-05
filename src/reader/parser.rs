@@ -176,7 +176,7 @@ impl Position for PullParser {
     /// Returns the position of the last event produced by the parser
     #[inline]
     fn position(&self) -> TextPosition {
-        self.pos[0]
+        self.pos.get(0).cloned().unwrap_or_else(TextPosition::new)
     }
 }
 

@@ -26,7 +26,10 @@ impl PullParser {
                             Token::TagEnd => this.emit_start_element(false),
                             Token::EmptyTagEnd => this.emit_start_element(true),
                             Token::Character(c) if is_whitespace_char(c) => this.into_state_continue(State::InsideOpeningTag(OpeningTagSubstate::InsideTag)),
-                            _ => unreachable!()
+                            _ => {
+                                debug_assert!(false, "unreachable");
+                                return None;
+                            },
                         }
                     }
                 }

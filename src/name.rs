@@ -61,11 +61,10 @@ pub struct Name<'a> {
 
 impl<'a> From<&'a str> for Name<'a> {
     fn from(s: &'a str) -> Name<'a> {
-        let mut parts = s.splitn(2, ':').fuse();
-        match (parts.next(), parts.next()) {
-            (Some(name), None) => Name::local(name),
-            (Some(prefix), Some(name)) => Name::prefixed(name, prefix),
-            _ => unreachable!(),
+        if let Some((prefix, name)) = s.split_once(':') {
+            Name::prefixed(name, prefix)
+        } else {
+            Name::local(s)
         }
     }
 }
