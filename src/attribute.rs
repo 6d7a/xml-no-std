@@ -40,7 +40,7 @@ impl<'a> Attribute<'a> {
     /// Creates a borrowed attribute using the provided borrowed name and a borrowed string value.
     #[inline]
     #[must_use]
-    pub fn new(name: Name<'a>, value: &'a str) -> Attribute<'a> {
+    pub const fn new(name: Name<'a>, value: &'a str) -> Self {
         Attribute { name, value }
     }
 }

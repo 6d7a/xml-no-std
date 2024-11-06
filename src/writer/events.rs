@@ -100,7 +100,7 @@ impl<'a> XmlEvent<'a> {
     /// Returns an writer event for a processing instruction.
     #[inline]
     #[must_use]
-    pub fn processing_instruction(name: &'a str, data: Option<&'a str>) -> XmlEvent<'a> {
+    pub const fn processing_instruction(name: &'a str, data: Option<&'a str>) -> Self {
         XmlEvent::ProcessingInstruction { name, data }
     }
 
@@ -124,7 +124,7 @@ impl<'a> XmlEvent<'a> {
     /// is disabled, it is possible to specify the name with `name()` method on the builder.
     #[inline]
     #[must_use]
-    pub fn end_element() -> EndElementBuilder<'a> {
+    pub const fn end_element() -> EndElementBuilder<'a> {
         EndElementBuilder { name: None }
     }
 
@@ -134,7 +134,7 @@ impl<'a> XmlEvent<'a> {
     /// (depending on the configuration).
     #[inline]
     #[must_use]
-    pub fn cdata(data: &'a str) -> XmlEvent<'a> {
+    pub const fn cdata(data: &'a str) -> Self {
         XmlEvent::CData(data)
     }
 
@@ -143,14 +143,14 @@ impl<'a> XmlEvent<'a> {
     /// All offending symbols, in particular, `&` and `<`, will be escaped by the writer.
     #[inline]
     #[must_use]
-    pub fn characters(data: &'a str) -> XmlEvent<'a> {
+    pub const fn characters(data: &'a str) -> Self {
         XmlEvent::Characters(data)
     }
 
     /// Returns a comment event.
     #[inline]
     #[must_use]
-    pub fn comment(data: &'a str) -> XmlEvent<'a> {
+    pub const fn comment(data: &'a str) -> Self {
         XmlEvent::Comment(data)
     }
 }
