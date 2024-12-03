@@ -80,8 +80,9 @@ impl PullParser {
 
             Token::CDataStart if self.depth() > 0 && self.config.c.coalesce_characters && self.config.c.cdata_to_characters => {
                 if self.buf.is_empty() {
-                    self.push_pos();
+                    self.push_pos(); // CDataEnd will pop pos if the buffer remains empty
                 }
+                // if coalescing chars, continue without event
                 self.into_state_continue(State::InsideCData)
             },
 
@@ -91,6 +92,8 @@ impl PullParser {
                 let mut next_event = if self.buf_has_data() {
                     let buf = self.take_buf();
                     if self.inside_whitespace && self.config.c.trim_whitespace {
+                        // there will be no event emitted for this, but start of buffering has pushed a pos
+                        self.next_pos();
                         None
                     } else if self.inside_whitespace && !self.config.c.whitespace_to_characters {
                         debug_assert!(buf.chars().all(|ch| ch.is_whitespace()), "ws={buf:?}");
