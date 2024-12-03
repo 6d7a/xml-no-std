@@ -146,32 +146,8 @@ impl CharReader {
                 Encoding::Unknown | Encoding::Utf16 => {
                     buf[pos] = next;
                     pos += 1;
-
-                    // sniff BOM
-                    if pos <= 3 && buf[..pos] == [0xEF, 0xBB, 0xBF][..pos] {
-                        if pos == 3 && self.encoding != Encoding::Utf16 {
-                            pos = 0;
-                            self.encoding = Encoding::Utf8;
-                        }
-                    } else if pos <= 2 && buf[..pos] == [0xFE, 0xFF][..pos] {
-                        if pos == 2 {
-                            pos = 0;
-                            self.encoding = Encoding::Utf16Be;
-                        }
-                    } else if pos <= 2 && buf[..pos] == [0xFF, 0xFE][..pos] {
-                        if pos == 2 {
-                            pos = 0;
-                            self.encoding = Encoding::Utf16Le;
-                        }
-                    } else if pos == 1 && self.encoding == Encoding::Utf16 {
-                        // sniff ASCII char in UTF-16
-                        self.encoding = if next == 0 { Encoding::Utf16Be } else { Encoding::Utf16Le };
-                    } else {
-                        // UTF-8 is the default, but XML decl can change it to other 8-bit encoding
-                        self.encoding = Encoding::Default;
-                        if pos == 1 && next.is_ascii() {
-                            return Ok(Some(next.into()));
-                        }
+                    if let Some(value) = self.sniff_bom(&buf[..pos], &mut pos) {
+                        return value;
                     }
                 },
                 Encoding::Utf16Be => {
@@ -202,6 +178,37 @@ impl CharReader {
                 },
             }
         }
+    }
+
+    #[cold]
+    fn sniff_bom(&mut self, buf: &[u8], pos: &mut usize) -> Option<Result<Option<char>, CharReadError>> {
+        // sniff BOM
+        if buf.len() <= 3 && [0xEF, 0xBB, 0xBF].starts_with(buf) {
+            if buf.len() == 3 && self.encoding != Encoding::Utf16 {
+                *pos = 0;
+                self.encoding = Encoding::Utf8;
+            }
+        } else if buf.len() <= 2 && [0xFE, 0xFF].starts_with(buf) {
+            if buf.len() == 2 {
+                *pos = 0;
+                self.encoding = Encoding::Utf16Be;
+            }
+        } else if buf.len() <= 2 && [0xFF, 0xFE].starts_with(buf) {
+            if buf.len() == 2 {
+                *pos = 0;
+                self.encoding = Encoding::Utf16Le;
+            }
+        } else if buf.len() == 1 && self.encoding == Encoding::Utf16 {
+            // sniff ASCII char in UTF-16
+            self.encoding = if buf[0] == 0 { Encoding::Utf16Be } else { Encoding::Utf16Le };
+        } else {
+            // UTF-8 is the default, but XML decl can change it to other 8-bit encoding
+            self.encoding = Encoding::Default;
+            if buf.len() == 1 && buf[0].is_ascii() {
+                return Some(Ok(Some(buf[0].into())));
+            }
+        }
+        None
     }
 }
 
