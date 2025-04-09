@@ -110,7 +110,7 @@ impl CharReader {
 
         let mut buf = [0u8; MAX_CODEPOINT_LEN];
         let mut pos = 0;
-        loop {
+        while pos < MAX_CODEPOINT_LEN {
             let next = match source.next() {
                 Some(b) => *b,
                 None if pos == 0 => return Ok(None),
@@ -178,6 +178,7 @@ impl CharReader {
                 },
             }
         }
+        Err(CharReadError::Io(alloc::string::String::from("InvalidData")))
     }
 
     #[cold]
