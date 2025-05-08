@@ -1,7 +1,6 @@
 extern crate alloc;
 
 use core::fmt;
-use core::fmt::Write;
 use core::result;
 
 use alloc::string::String;

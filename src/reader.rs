@@ -148,7 +148,7 @@ impl<'a> EventReader<'a, core::slice::Iter<'a, u8>> {
     /// A convenience method to create an `XmlReader` from a string slice.
     #[inline]
     #[must_use]
-    pub fn from_str(source: &'a str) -> EventReader<core::slice::Iter<'a, u8>> {
+    pub fn from_str(source: &str) -> EventReader<core::slice::Iter<u8>> {
         EventReader::new(source.as_bytes().into_iter())
     }
 }

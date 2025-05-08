@@ -1,6 +1,6 @@
 [package]
 name = "xml-no-std"
-version = "0.8.21"
+version = "0.8.26"
 authors = ["Vladimir Matveev <vmatveev@citrine.cc>"]
 license = "MIT"
 description = "An XML library in pure Rust"

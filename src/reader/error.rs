@@ -5,9 +5,8 @@ use crate::reader::lexer::Token;
 
 use alloc::borrow::Cow;
 use alloc::boxed::Box;
-use alloc::string::{String, ToString};
+use alloc::string::String;
 
-use core::borrow::Borrow;
 use core::fmt;
 use core::str;
 
@@ -166,7 +165,7 @@ impl Error {
         use self::ErrorKind::{Io, Syntax, UnexpectedEof, Utf8};
         match &self.kind {
             Io(io_error) => &io_error,
-            Utf8(reason) => "UTF8 Error",
+            Utf8(_) => "UTF8 Error",
             Syntax(msg) => msg.as_ref(),
             UnexpectedEof => "Unexpected EOF",
         }

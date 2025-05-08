@@ -32,7 +32,7 @@ impl<'a, E: Escapes> Escaped<'a, E> {
     }
 }
 
-impl<'a, E: Escapes> Display for Escaped<'a, E> {
+impl<E: Escapes> Display for Escaped<'_, E> {
     fn fmt(&self, f: &mut Formatter<'_>) -> Result {
         let mut total_remaining = self.to_escape;
 

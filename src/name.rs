@@ -75,7 +75,7 @@ impl<'a> From<(&'a str, &'a str)> for Name<'a> {
     }
 }
 
-impl<'a> fmt::Display for Name<'a> {
+impl fmt::Display for Name<'_> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         if let Some(namespace) = self.namespace {
             write!(f, "{{{namespace}}}")?;

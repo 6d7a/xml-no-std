@@ -20,7 +20,7 @@ pub struct Attribute<'a> {
     pub value: &'a str,
 }
 
-impl<'a> fmt::Display for Attribute<'a> {
+impl fmt::Display for Attribute<'_> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "{}=\"{}\"", self.name, Escaped::<AttributeEscapes>::new(self.value))
     }
