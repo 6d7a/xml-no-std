@@ -375,7 +375,7 @@ impl Emitter {
     }
 
     pub fn emit_characters(&mut self, target: &mut String, content: &str) {
-        self.check_document_started(target);
+        let _ = self.check_document_started(target);
         self.fix_non_empty_element(target);
 
         if self.config.perform_escaping {
